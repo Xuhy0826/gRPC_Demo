@@ -1,10 +1,9 @@
 ﻿syntax = "proto3";
-
 import "Message.proto";
 
 service EmployeeService{
 	//根据ID获取员工（一元消息）
-	rpc GetEmployeeById(GetEmployeeByIdRequest) returns (GetEmployeeByIdResponse);
+	rpc GetEmployeeById(GetEmployeeByIdRequest) returns (EmployeeResponse);
 	//根据条件获取全部员工（服务端Stream）
 	rpc GetEmployeeCollection(GetEmployeeCollectionRequest) returns (stream GetEmployeeCollectionReponse);
 	//员工上传头像（客户端Stream）
@@ -13,17 +12,13 @@ service EmployeeService{
 	rpc Save(EmployeeRequest) returns (EmployeeResponse);
 	rpc SaveAll(stream EmployeeRequest) returns (stream EmployeeResponse);
 }
-
 //parms:
-
-//根据ID获取员工（一元消息）
 message GetEmployeeByIdRequest{
 	int32 Id = 1;
 }
-message GetEmployeeByIdResponse{
+message EmployeeResponse{
 	Employee Employee = 1;
 }
-//根据条件获取全部员工（服务端Stream）
 message GetEmployeeCollectionRequest{
 	string SearchTerm = 1;
 	bool IsValid = 2;
@@ -31,17 +26,14 @@ message GetEmployeeCollectionRequest{
 message GetEmployeeCollectionReponse{
 	Employee Employee = 1;
 }
-//员工上传头像（客户端Stream）
 message AddAvatarRequest{
 	bytes Data = 1;
 }
 message AddAvatarReponse{
 	bool IsOK = 1;
 }
-//（双向Stream）
 message EmployeeRequest{
 	Employee Employee = 1;
 }
-message EmployeeResponse{
-	Employee Employee = 1;
-}
+
+

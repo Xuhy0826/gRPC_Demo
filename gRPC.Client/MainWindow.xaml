@@ -1,0 +1,73 @@
+﻿<hc:Window x:Class="gRPC.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d" Title="gPRC.Client" WindowStartupLocation="CenterScreen"
+        Style="{StaticResource WindowWin10}"
+        ShowTitle="True" Background="{DynamicResource BackgroundBrush}"
+        Height="650" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <hc:TextBox Grid.Column="0" hc:TitleElement.Title="Request:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="Auto"
+                        Text="{Binding Request1}"/>
+            <Button x:Name="btnGetEmployeeById" Grid.Column="1"
+                    Content="GetEmployeeById" VerticalAlignment="Center"
+                    Style="{DynamicResource ButtonPrimary}"
+                    Command="{Binding GetEmployeeByIdCmd}"/>
+            <RichTextBox Margin="5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                         BorderThickness="2" hc:BorderElement.CornerRadius="5"
+                         BorderBrush="{DynamicResource BorderBrush}"
+                         Background="{DynamicResource DefaultBrush}"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <FlowDocument>
+                    <Paragraph>
+                        <Run FontSize="13" Text="{Binding Response1}"/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+    </Grid>
+</hc:Window>
