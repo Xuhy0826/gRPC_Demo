@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+import "Message.proto";
+
+//根据ID获取员工（一元消息）
+service EmployeeService{
+	rpc GetEmployeeById(GetEmployeeByIdRequest) returns (GetEmployeeByIdResponse);
+}
+//根据条件获取全部员工（服务端Stream）
+
+//员工上传头像（客户端Stream）
+
+//（双向Stream）
+
+
+message GetEmployeeByIdRequest{
+	int32 Id = 1;
+}
+
+message GetEmployeeByIdResponse{
+	Employee Employee = 1;
+}

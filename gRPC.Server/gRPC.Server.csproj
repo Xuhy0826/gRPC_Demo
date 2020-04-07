@@ -4,4 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Protos\Message.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.28.0-pre2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\Message.proto" GrpcServices="Server" />
+  </ItemGroup>
+
 </Project>
