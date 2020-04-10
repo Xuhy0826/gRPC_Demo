@@ -1,17 +1,17 @@
-﻿syntax = "proto3";
+﻿syntax = "proto3";	//给编译器指明语法为proto3
 
 //员工
 message Employee{
-	int32 Id = 1;
-	string Name = 2;
-	int32 EmployeeNo = 3;
-	Gender Gender = 4;
-	Date BirthDay = 5;
-	string Department = 6;
-	bool IsValid = 7;
-	bytes Avatar = 8;
+	int32 Id = 1;				//Id
+	string Name = 2;				//姓名
+	int32 EmployeeNo = 3;		//工号
+	Gender Gender = 4;			//性别
+	Date BirthDay = 5;			//生日
+	string Department = 6;		//部门
+	bool IsValid = 7;			//有效性
+	bytes Photo = 8;			//照片
 }
-//性别
+//性别（枚举）
 enum Gender{
 	NOT_SPESIFICED = 0;
 	FEMALE = 1;
@@ -22,4 +22,35 @@ message Date{
 	int32 Year = 1;
 	int32 Month = 2;
 	int32 Day = 3;
+}
+
+//Service 用的参数:
+//根据Id查询员工信息
+message GetEmployeeByIdRequest{	
+	int32 Id = 1;
+}
+//上传的员工信息请求
+message EmployeeRequest{
+	Employee Employee = 1;
+}
+//返回员工信息
+message EmployeeResponse{
+	Employee Employee = 1;
+}
+//根据条件查询员工
+message GetEmployeeCollectionRequest{
+	string SearchTerm = 1;
+	bool IsValid = 2;
+}
+//返回员工信息集合
+message GetEmployeeCollectionReponse{
+	Employee Employee = 1;
+}
+//上传员工照片
+message AddPhotoRequest{
+	bytes Photo = 1;
+}
+//上传员工照片响应
+message AddPhotoReponse{
+	bool IsOK = 1;
 }

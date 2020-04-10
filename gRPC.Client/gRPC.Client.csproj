@@ -37,4 +37,9 @@
       <Link>Protos\Service.proto</Link>
     </Protobuf>
   </ItemGroup>
+  <ItemGroup>
+    <None Update="photo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

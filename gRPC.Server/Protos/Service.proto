@@ -4,36 +4,12 @@ import "Message.proto";
 service EmployeeService{
 	//根据ID获取员工（一元消息）
 	rpc GetEmployeeById(GetEmployeeByIdRequest) returns (EmployeeResponse);
-	//根据条件获取全部员工（服务端Stream）
+	//上传员工信息（一元消息）
+	rpc SaveEmployee(EmployeeRequest) returns (EmployeeResponse);
+	//根据条件获取全部员工（服务端流）
 	rpc GetEmployeeCollection(GetEmployeeCollectionRequest) returns (stream GetEmployeeCollectionReponse);
-	//员工上传头像（客户端Stream）
-	rpc AddAvatar(stream AddAvatarRequest) returns (AddAvatarReponse);
-	//（双向Stream）
-	rpc Save(EmployeeRequest) returns (EmployeeResponse);
-	rpc SaveAll(stream EmployeeRequest) returns (stream EmployeeResponse);
+	//员工上传照片（客户端流）
+	rpc AddPhoto(stream AddPhotoRequest) returns (AddPhotoReponse);
+	//（双向流）
+	rpc SaveEmployees(stream EmployeeRequest) returns (stream EmployeeResponse);
 }
-//parms:
-message GetEmployeeByIdRequest{
-	int32 Id = 1;
-}
-message EmployeeResponse{
-	Employee Employee = 1;
-}
-message GetEmployeeCollectionRequest{
-	string SearchTerm = 1;
-	bool IsValid = 2;
-}
-message GetEmployeeCollectionReponse{
-	Employee Employee = 1;
-}
-message AddAvatarRequest{
-	bytes Data = 1;
-}
-message AddAvatarReponse{
-	bool IsOK = 1;
-}
-message EmployeeRequest{
-	Employee Employee = 1;
-}
-
-

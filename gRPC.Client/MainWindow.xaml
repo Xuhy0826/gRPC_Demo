@@ -11,7 +11,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="200"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -19,55 +19,143 @@
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
             <hc:TextBox Grid.Column="0" hc:TitleElement.Title="Request:" Margin="5"
                         hc:TitleElement.TitleAlignment="Left"
-                        hc:TitleElement.TitleWidth="Auto"
+                        hc:TitleElement.TitleWidth="65"
                         Text="{Binding Request1}"/>
-            <Button x:Name="btnGetEmployeeById" Grid.Column="1"
+            <Button x:Name="btnGetEmployeeById" Grid.Column="1" Width="150"
                     Content="GetEmployeeById" VerticalAlignment="Center"
                     Style="{DynamicResource ButtonPrimary}"
                     Command="{Binding GetEmployeeByIdCmd}"/>
-            <RichTextBox Margin="5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
-                         BorderThickness="2" hc:BorderElement.CornerRadius="5"
-                         BorderBrush="{DynamicResource BorderBrush}"
-                         Background="{DynamicResource DefaultBrush}"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <FlowDocument>
-                    <Paragraph>
-                        <Run FontSize="13" Text="{Binding Response1}"/>
-                    </Paragraph>
-                </FlowDocument>
-            </RichTextBox>
+            <hc:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        hc:TitleElement.Title="Response:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        TextWrapping="Wrap"
+                        Text="{Binding Response1}"/>
+            <hc:Divider LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}" 
+                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="5px" Margin="0"
+                        VerticalAlignment="Bottom"/>
         </Grid>
+
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
+            <hc:TextBox Grid.Column="0" hc:TitleElement.Title="Request:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        Text="{Binding Request2}"/>
+            <Button Grid.Column="1" Width="150"
+                    Content="GetEmployeeCollection" VerticalAlignment="Center"
+                    Style="{DynamicResource ButtonPrimary}"
+                    Command="{Binding GetEmployeeCollectionCmd}"/>
+            <hc:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        hc:TitleElement.Title="Response:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        TextWrapping="Wrap"
+                        Text="{Binding Response2}"/>
+            <hc:Divider LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}" 
+                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="5px" Margin="0"
+                        VerticalAlignment="Bottom"/>
+            <hc:Divider LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}" 
+                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="5px" Margin="0"
+                        VerticalAlignment="Bottom"/>
         </Grid>
         <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
+            <hc:TextBox Grid.Column="0" hc:TitleElement.Title="Request:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65" IsReadOnly="True"
+                        Text="{Binding Request3}"/>
+            <Button Grid.Column="1" Width="150"
+                    Content="AddPhoto" VerticalAlignment="Center"
+                    Style="{DynamicResource ButtonPrimary}"
+                    Command="{Binding AddPhotoCmd}"/>
+            <hc:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        hc:TitleElement.Title="Response:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        TextWrapping="Wrap"
+                        Text="{Binding Response3}"/>
+            <hc:Divider LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}" 
+                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="5px" Margin="0"
+                        VerticalAlignment="Bottom"/>
         </Grid>
         <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
+            <hc:TextBox Grid.Column="0" hc:TitleElement.Title="Request:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        Text="{Binding Request4}"/>
+            <Button Grid.Column="1" Width="150"
+                    Content="SaveEmployee" VerticalAlignment="Center"
+                    Style="{DynamicResource ButtonPrimary}"
+                    Command="{Binding SaveEmployeeCmd}"/>
+            <hc:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        hc:TitleElement.Title="Response:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        TextWrapping="Wrap"
+                        Text="{Binding Response4}"/>
+            <hc:Divider LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}" 
+                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="5px" Margin="0"
+                        VerticalAlignment="Bottom"/>
         </Grid>
         <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
+            <hc:TextBox Grid.Column="0" hc:TitleElement.Title="Request:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        Text="{Binding Request5}"/>
+            <Button Grid.Column="1" Width="150"
+                    Content="SaveEmployees" VerticalAlignment="Center"
+                    Style="{DynamicResource ButtonPrimary}"
+                    Command="{Binding SaveEmployeesCmd}"/>
+            <hc:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        hc:TitleElement.Title="Response:" Margin="5"
+                        hc:TitleElement.TitleAlignment="Left"
+                        hc:TitleElement.TitleWidth="65"
+                        TextWrapping="Wrap"
+                        Text="{Binding Response5}"/>
         </Grid>
     </Grid>
 </hc:Window>
