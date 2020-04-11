@@ -17,19 +17,23 @@ namespace gRPC.Server.Services
         /// <param name="request"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override async Task<EmployeeResponse> GetEmployeeById(GetEmployeeByIdRequest request, ServerCallContext context)
+        public override async Task<EmployeeResponse> GetEmployeeById(GetEmployeeByIdRequest request,
+            ServerCallContext context)
         {
-            //读取请求头中的元数据
-            var metaData = context.RequestHeaders;
-            foreach (var data in metaData)
+            //读取请求头中的元数据(应用层自定义的 key-value 对)
+            var metaDataIdHeaders = context.RequestHeaders;
+            foreach (var data in metaDataIdHeaders)
             {
                 Console.WriteLine($"{data.Key} => {data.Value}");
             }
 
+            //根据请求的Id找到员工信息
             var employee = EmployeeRepository.Emloyees.SingleOrDefault(emp => emp.Id == request.Id);
+
             if (employee == null)
                 throw new RpcException(Status.DefaultSuccess
                     , $"Employee of {request.Id} is not found");
+
             var response = new EmployeeResponse { Employee = employee };
             return await Task.FromResult(response);
         }
@@ -44,7 +48,7 @@ namespace gRPC.Server.Services
         public override async Task GetEmployeeCollection(GetEmployeeCollectionRequest request, IServerStreamWriter<GetEmployeeCollectionReponse> responseStream,
             ServerCallContext context)
         {
-            var employees = new List<Employee>();
+            List<Employee> employees;
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))  //有条件就根据条件查询
             {
                 employees = EmployeeRepository.Emloyees
@@ -57,10 +61,12 @@ namespace gRPC.Server.Services
                 employees = EmployeeRepository.Emloyees;
             }
             employees = employees.FindAll(emp => emp.IsValid == request.IsValid);
+
             foreach (var employee in employees)
             {
-                await responseStream.WriteAsync(
-                    new GetEmployeeCollectionReponse { Employee = employee });
+                //***************************向响应流中写入数据*************************************
+                await responseStream.WriteAsync(new GetEmployeeCollectionReponse { Employee = employee });
+                //******************************************************************************
             }
         }
 
@@ -77,8 +83,10 @@ namespace gRPC.Server.Services
             while (await requestStream.MoveNext(new CancellationToken()))
             {
                 buffer.AddRange(requestStream.Current.Photo);
+                //每接收一次请求打印一条消息来显示
                 Console.WriteLine($"{++count} : receive requestStreamData's length is {requestStream.Current.Photo.Length}");
             }
+            //只是将收到的全部数据还原成原来的图片数据
             File.WriteAllBytes(@"photo.jpg", buffer.ToArray());
             return new AddPhotoReponse { IsOK = true };
         }
@@ -99,12 +107,15 @@ namespace gRPC.Server.Services
         {
             while (await requestStream.MoveNext(new CancellationToken()))
             {
+                //从请求流中获取数据
                 var newEmployee = requestStream.Current.Employee;
                 if (!EmployeeRepository.Emloyees.Exists(emp => emp.Id == newEmployee.Id))
                 {
                     EmployeeRepository.Emloyees.Add(newEmployee);
                 }
+                //每存储一条员工数据后在控制台上打印一条记录
                 Console.WriteLine($"receive NewEmployee {newEmployee.Name}");
+                //每存储一条员工数据后向响应流中写入数据返回给客户端
                 await responseStream.WriteAsync(new EmployeeResponse()
                 {
                     Employee = newEmployee

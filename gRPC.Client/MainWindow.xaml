@@ -30,7 +30,7 @@
                         hc:TitleElement.TitleAlignment="Left"
                         hc:TitleElement.TitleWidth="65"
                         Text="{Binding Request1}"/>
-            <Button x:Name="btnGetEmployeeById" Grid.Column="1" Width="150"
+            <Button x:Name="btnGetEmployeeById" Grid.Column="1" Width="160"
                     Content="GetEmployeeById" VerticalAlignment="Center"
                     Style="{DynamicResource ButtonPrimary}"
                     Command="{Binding GetEmployeeByIdCmd}"/>
@@ -59,7 +59,7 @@
                         hc:TitleElement.TitleAlignment="Left"
                         hc:TitleElement.TitleWidth="65"
                         Text="{Binding Request2}"/>
-            <Button Grid.Column="1" Width="150"
+            <Button Grid.Column="1" Width="160"
                     Content="GetEmployeeCollection" VerticalAlignment="Center"
                     Style="{DynamicResource ButtonPrimary}"
                     Command="{Binding GetEmployeeCollectionCmd}"/>
@@ -90,7 +90,7 @@
                         hc:TitleElement.TitleAlignment="Left"
                         hc:TitleElement.TitleWidth="65" IsReadOnly="True"
                         Text="{Binding Request3}"/>
-            <Button Grid.Column="1" Width="150"
+            <Button Grid.Column="1" Width="160"
                     Content="AddPhoto" VerticalAlignment="Center"
                     Style="{DynamicResource ButtonPrimary}"
                     Command="{Binding AddPhotoCmd}"/>
@@ -118,7 +118,7 @@
                         hc:TitleElement.TitleAlignment="Left"
                         hc:TitleElement.TitleWidth="65"
                         Text="{Binding Request4}"/>
-            <Button Grid.Column="1" Width="150"
+            <Button Grid.Column="1" Width="160"
                     Content="SaveEmployee" VerticalAlignment="Center"
                     Style="{DynamicResource ButtonPrimary}"
                     Command="{Binding SaveEmployeeCmd}"/>
@@ -146,7 +146,7 @@
                         hc:TitleElement.TitleAlignment="Left"
                         hc:TitleElement.TitleWidth="65"
                         Text="{Binding Request5}"/>
-            <Button Grid.Column="1" Width="150"
+            <Button Grid.Column="1" Width="160"
                     Content="SaveEmployees" VerticalAlignment="Center"
                     Style="{DynamicResource ButtonPrimary}"
                     Command="{Binding SaveEmployeesCmd}"/>

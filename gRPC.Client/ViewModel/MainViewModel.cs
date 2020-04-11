@@ -17,8 +17,6 @@ namespace gRPC.Client.ViewModel
     [AddINotifyPropertyChangedInterface]
     public class MainViewModel
     {
-        private const string serverAdderss = "https://localhost:5001";  //服务端的地址
-
         #region dp
         public bool IsChanged { get; set; }
         public string Request1 { get; set; } = string.Empty;
@@ -42,60 +40,70 @@ namespace gRPC.Client.ViewModel
         public ICommand SaveEmployeesCmd => new CommandBase(SaveEmployees);
         #endregion
 
+        private const string ServerAdderss = "https://localhost:5001";  //服务端的地址
         protected void GetEmployeeById()
         {
-            Response1 = string.Empty;
-            var metaData = new Metadata     //元数据都是一些键值对字符串
+            Response1 = string.Empty;   //清空前台显示
+            var metaData = new Metadata   //元数据都是一些 key-value对
             {
-                { "myKey","myValue"}
+                { "myKey","myValue"}    //随便假装一点 key-value对
             };
+
             if (int.TryParse(Request1, out var id))
             {
-                using var channel = GrpcChannel.ForAddress(serverAdderss);
+                //*****************************主要是这里********************************
+                using var channel = GrpcChannel.ForAddress(ServerAdderss);          //创建通道
                 var client = new EmployeeService.EmployeeServiceClient(channel);
-                var response = client.GetEmployeeById(new GetEmployeeByIdRequest
-                {
-                    Id = id
-                });
-                Response1 = response.ToString();
+                var response = client.GetEmployeeById(
+                    new GetEmployeeByIdRequest { Id = id }  //参数一：request参数（员工Id）
+                    , metaData);                            //参数二：用户自定义的元数据
+                                                            //*********************************************************************
+
+                Response1 = response.ToString();    //将响应信息输出前台显示
                 return;
             }
-
             MessageBox.Show("request is unValid");
         }
 
         protected async void GetEmployeeCollection()
         {
-            Response2 = string.Empty;
-            using var channel = GrpcChannel.ForAddress(serverAdderss);
+            Response2 = string.Empty;       //清空前台显示
+            using var channel = GrpcChannel.ForAddress(ServerAdderss);
             var client = new EmployeeService.EmployeeServiceClient(channel);
 
-            //发送请求
-            using var serverStreamingCall = client.GetEmployeeCollection(new GetEmployeeCollectionRequest
-            { IsValid = true, SearchTerm = Request2.Trim() });
+            //发送请求，注意和一元模式不同的是，使用client调用存根方法的返回类型是AsyncServerStreamingCall
+            using var serverStreamingCall =
+                client.GetEmployeeCollection(
+                new GetEmployeeCollectionRequest
+                {   //两个查询参数而已，没啥
+                    IsValid = true,
+                    SearchTerm = Request2.Trim()
+                });
             var responseStream = serverStreamingCall.ResponseStream;
-            //读取流数据
+
+            //读取流数据，调用响应流的MoveNext方法
             while (await responseStream.MoveNext(new CancellationToken()))
             {
+                // 将消息显示到前端
                 Response2 += responseStream.Current.Employee + Environment.NewLine;
             }
         }
 
         protected async void AddPhoto()
         {
-            Response3 = string.Empty;
-            using var channel = GrpcChannel.ForAddress(serverAdderss);
+            Response3 = string.Empty;       //清空前台显示
+            using var channel = GrpcChannel.ForAddress(ServerAdderss);
             var client = new EmployeeService.EmployeeServiceClient(channel);
-
-            await using var fs = File.OpenRead(Request3);
-
+            // 调用这个存根方法得到的是“AsyncClientStreamingCall类型”
             using var clientStreamingCall = client.AddPhoto();
+            // 拿到“请求流”
             var requestStream = clientStreamingCall.RequestStream;
 
             //向“请求流”中写数据
+            await using var fs = File.OpenRead(Request3);
             while (true)
             {
-                byte[] buffer = new byte[1024]; //模拟多次传递，将缓存设置小一点
+                var buffer = new byte[1024]; //模拟多次传递，将缓存设置小一点
                 var length = await fs.ReadAsync(buffer, 0, buffer.Length); //将数据读取到buffer中
                 if (length == 0)  //读取完毕
                 {
@@ -106,31 +114,31 @@ namespace gRPC.Client.ViewModel
                     Array.Resize(ref buffer, length);   //改变buffer数组的长度
                 }
                 var streamData = ByteString.CopyFrom(buffer);   //将byte数组数据转成传递时需要的ByteString类型
+                                                                //将ByteString数据写入“请求流”中
                 await requestStream.WriteAsync(new AddPhotoRequest { Photo = streamData });
             }
 
             await requestStream.CompleteAsync();  //告知服务端数据传递完毕
             var response = await clientStreamingCall.ResponseAsync;
-            Response3 = response.IsOK ? "congratulations" : "ah oh";
+            Response3 = response.IsOK ? "congratulations" : "ah oh"; // 将消息显示到前端
         }
 
-        protected async void SaveEmployee()
+        protected void SaveEmployee()
         {
-            Response4 = string.Empty;
-            using var channel = GrpcChannel.ForAddress(serverAdderss);
+            Response4 = string.Empty;       //清空前台显示
+            using var channel = GrpcChannel.ForAddress(ServerAdderss);
             var client = new EmployeeService.EmployeeServiceClient(channel);
             var newEmp = GetNewEmployee(Request4);
             var response = client.SaveEmployee(new EmployeeRequest { Employee = newEmp });
-            Response5 += $"New Employee “{response.Employee.Name}” is Saved";
+            Response4 += $"New Employee “{response.Employee.Name}” is Saved";
         }
 
 
         protected async void SaveEmployees()
         {
-            Response5 = string.Empty;
-            using var channel = GrpcChannel.ForAddress(serverAdderss);
+            Response5 = string.Empty;       //清空前台显示
+            using var channel = GrpcChannel.ForAddress(ServerAdderss);
             var client = new EmployeeService.EmployeeServiceClient(channel);
-
             var serverStreamingCall = client.SaveEmployees();
             //因为是双向流的方式，我们需要同时操作“请求流”和“响应流”
             var requestStream = serverStreamingCall.RequestStream;
@@ -156,6 +164,7 @@ namespace gRPC.Client.ViewModel
             });
         }
 
+        //查询用户
         private Employee GetNewEmployee(string employeeName)
         {
             var employee = ClientRepository.NewEmployees.Find(emp => emp.Name == employeeName);
@@ -164,7 +173,8 @@ namespace gRPC.Client.ViewModel
             return null;
         }
 
-        private List<Employee> GetNewEmployees(string employeeNames)
+        //查询用户们
+        private IEnumerable<Employee> GetNewEmployees(string employeeNames)
         {
             var names = employeeNames.Split(",");
             var empList = names.Select(empName =>
