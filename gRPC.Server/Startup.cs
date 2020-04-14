@@ -15,7 +15,8 @@ namespace gRPC.Server
         {
             services.AddGrpc();
             services.AddAuthorization();
-            services.AddAuthentication().AddCertificate(opt =>
+            services.AddAuthentication()
+                .AddCertificate(opt =>
             {
                 opt.RevocationMode = X509RevocationMode.NoCheck;
                 opt.AllowedCertificateTypes = CertificateTypes.SelfSigned;

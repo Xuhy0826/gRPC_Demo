@@ -2,7 +2,7 @@ Write-Host "Creating Certificates for Self-Signed Testing"
 
 Write-Host "Createing Root Certificate"
 $cert = New-SelfSignedCertificate -Type Custom -KeySpec Signature `
--Subject "CN-localhost" `
+-Subject "CN=localhost" `
 -FriendlyName "gRPCDemoRootCert" `
 -KeyExportPolicy Exportable `
 -HashAlgorithm sha256 `
