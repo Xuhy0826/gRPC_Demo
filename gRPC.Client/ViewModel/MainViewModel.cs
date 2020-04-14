@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,6 +19,15 @@ namespace gRPC.Client.ViewModel
     [AddINotifyPropertyChangedInterface]
     public class MainViewModel
     {
+        HttpClient _httpClient;
+        public MainViewModel()
+        {
+            var cert = new X509Certificate2("gRPCDemoSelfCert.pfx", "P@ssw0rd!");
+            var handler = new HttpClientHandler();
+            handler.ClientCertificates.Add(cert);
+            _httpClient = new HttpClient(handler);
+        }
+
         #region dp
         public bool IsChanged { get; set; }
         public string Request1 { get; set; } = string.Empty;
@@ -52,14 +63,24 @@ namespace gRPC.Client.ViewModel
             if (int.TryParse(Request1, out var id))
             {
                 //*****************************主要是这里********************************
-                using var channel = GrpcChannel.ForAddress(ServerAdderss);          //创建通道
+                using var channel = GrpcChannel.ForAddress(ServerAdderss,
+                    new GrpcChannelOptions
+                    {
+                        HttpClient = _httpClient
+                    });          //创建通道
                 var client = new EmployeeService.EmployeeServiceClient(channel);
-                var response = client.GetEmployeeById(
-                    new GetEmployeeByIdRequest { Id = id }  //参数一：request参数（员工Id）
-                    , metaData);                            //参数二：用户自定义的元数据
-                                                            //*********************************************************************
-
-                Response1 = response.ToString();    //将响应信息输出前台显示
+                try
+                {
+                    var response = client.GetEmployeeById(
+                        new GetEmployeeByIdRequest { Id = id }  //参数一：request参数（员工Id）
+                        , metaData);                            //参数二：用户自定义的元数据
+                    Response1 = response.ToString();    //将响应信息输出前台显示
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                //*********************************************************************
                 return;
             }
             MessageBox.Show("request is unValid");

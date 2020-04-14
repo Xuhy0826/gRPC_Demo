@@ -6,9 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using gRPC.Server.Repository;
+using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.Authorization;
 
 namespace gRPC.Server.Services
 {
+    [Authorize(AuthenticationSchemes = CertificateAuthenticationDefaults.AuthenticationScheme)]
     public class GrpcEmployeeService : EmployeeService.EmployeeServiceBase
     {
         /// <summary>

@@ -38,6 +38,9 @@
     </Protobuf>
   </ItemGroup>
   <ItemGroup>
+    <None Update="gRPCDemoSelfCert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="photo.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
